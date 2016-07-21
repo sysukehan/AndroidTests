@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,8 @@ public class ExpandableListViewTestActivity extends AppCompatActivity {
 
     private ExpandableListView listview;
     private MyExpandableListViewAdapter adapter;
+    private Button button;
+
     private Map<String, List<String>> dataset = new HashMap<>();
     private String[] parentList = new String[]{"first", "second", "third"};
     private List<String> childrenList1 = new ArrayList<>();
@@ -39,12 +42,14 @@ public class ExpandableListViewTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.expandable_layout);
         listview = (ExpandableListView) findViewById(R.id.expandablelistview);
+        button = (Button) findViewById(R.id.updateData);
         initialData();
         adapter = new MyExpandableListViewAdapter();
         listview.setAdapter(adapter);
         listview.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView expandableListView, View view, int parentPos, int childPos, long l) {
+            public boolean onChildClick(ExpandableListView expandableListView, View view,
+                                        int parentPos, int childPos, long l) {
                 Toast.makeText(ExpandableListViewTestActivity.this,
                         dataset.get(parentList[parentPos]).get(childPos), Toast.LENGTH_SHORT).show();
                 return true;
@@ -64,8 +69,18 @@ public class ExpandableListViewTestActivity extends AppCompatActivity {
                 return true;
             }
         });
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateData();
+                Toast.makeText(ExpandableListViewTestActivity.this, "数据已更新", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
+    /**
+     * 初始化数据
+     */
     private void initialData() {
         childrenList1.add(parentList[0] + "-" + "first");
         childrenList1.add(parentList[0] + "-" + "second");
@@ -79,6 +94,25 @@ public class ExpandableListViewTestActivity extends AppCompatActivity {
         dataset.put(parentList[0], childrenList1);
         dataset.put(parentList[1], childrenList2);
         dataset.put(parentList[2], childrenList3);
+    }
+
+    /**
+     * 更新数据
+     */
+    private void updateData() {
+        childrenList1.clear();
+        childrenList1.add(parentList[0] + "-new-" + "first");
+        childrenList1.add(parentList[0] + "-new-" + "second");
+        childrenList1.add(parentList[0] + "-new-" + "third");
+        childrenList2.clear();
+        childrenList2.add(parentList[1] + "-new-" + "first");
+        childrenList2.add(parentList[1] + "-new-" + "second");
+        childrenList2.add(parentList[1] + "-new-" + "third");
+        childrenList3.clear();
+        childrenList3.add(parentList[2] + "-new-" + "first");
+        childrenList3.add(parentList[2] + "-new-" + "second");
+        childrenList3.add(parentList[2] + "-new-" + "third");
+        adapter.notifyDataSetChanged();
     }
 
     private class MyExpandableListViewAdapter extends BaseExpandableListAdapter {
@@ -129,7 +163,8 @@ public class ExpandableListViewTestActivity extends AppCompatActivity {
         @Override
         public View getGroupView(int parentPos, boolean b, View view, ViewGroup viewGroup) {
             if (view == null) {
-                LayoutInflater inflater = (LayoutInflater) ExpandableListViewTestActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) ExpandableListViewTestActivity
+                        .this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.parent_item, null);
             }
             view.setTag(R.layout.parent_item, parentPos);
@@ -143,7 +178,8 @@ public class ExpandableListViewTestActivity extends AppCompatActivity {
         @Override
         public View getChildView(int parentPos, int childPos, boolean b, View view, ViewGroup viewGroup) {
             if (view == null) {
-                LayoutInflater inflater = (LayoutInflater) ExpandableListViewTestActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) ExpandableListViewTestActivity
+                        .this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.child_item, null);
             }
             view.setTag(R.layout.parent_item, parentPos);
@@ -153,7 +189,8 @@ public class ExpandableListViewTestActivity extends AppCompatActivity {
             text.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(ExpandableListViewTestActivity.this, "点到了内置的textview", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ExpandableListViewTestActivity.this, "点到了内置的textview",
+                            Toast.LENGTH_SHORT).show();
                 }
             });
             return view;
