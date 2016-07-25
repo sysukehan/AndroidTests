@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidTests.iml" filepath="$PROJECT_DIR$/AndroidTests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EventBusTest/EventBusTest.iml" filepath="$PROJECT_DIR$/EventBusTest/EventBusTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/ExpandableListViewTest/ExpandableListViewTest.iml" filepath="$PROJECT_DIR$/ExpandableListViewTest/ExpandableListViewTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ResourceFileTest/resourcetest.iml" filepath="$PROJECT_DIR$/ResourceFileTest/resourcetest.iml" />
       <module fileurl="file://$PROJECT_DIR$/ExpandableListViewTest/app.iml" filepath="$PROJECT_DIR$/ExpandableListViewTest/app.iml" />
     </modules>
   </component>

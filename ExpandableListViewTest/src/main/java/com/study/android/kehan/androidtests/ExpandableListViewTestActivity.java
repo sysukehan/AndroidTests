@@ -29,7 +29,8 @@ public class ExpandableListViewTestActivity extends AppCompatActivity {
 
     private ExpandableListView listview;
     private MyExpandableListViewAdapter adapter;
-    private Button button;
+    private Button updateParent;
+    private Button updateChild;
 
     private Map<String, List<String>> dataset = new HashMap<>();
     private String[] parentList = new String[]{"first", "second", "third"};
@@ -42,7 +43,8 @@ public class ExpandableListViewTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.expandable_layout);
         listview = (ExpandableListView) findViewById(R.id.expandablelistview);
-        button = (Button) findViewById(R.id.updateData);
+        updateChild = (Button) findViewById(R.id.updateChildData);
+        updateParent = (Button) findViewById(R.id.updateParentData);
         initialData();
         adapter = new MyExpandableListViewAdapter();
         listview.setAdapter(adapter);
@@ -69,11 +71,20 @@ public class ExpandableListViewTestActivity extends AppCompatActivity {
                 return true;
             }
         });
-        button.setOnClickListener(new View.OnClickListener() {
+
+        updateChild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateData();
-                Toast.makeText(ExpandableListViewTestActivity.this, "数据已更新", Toast.LENGTH_SHORT).show();
+                updateChildData();
+                Toast.makeText(ExpandableListViewTestActivity.this, "子项数据已更新", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        updateParent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateParentData();
+                Toast.makeText(ExpandableListViewTestActivity.this, "父项数据已更新", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -97,9 +108,9 @@ public class ExpandableListViewTestActivity extends AppCompatActivity {
     }
 
     /**
-     * 更新数据
+     * 更新子项数据
      */
-    private void updateData() {
+    private void updateChildData() {
         childrenList1.clear();
         childrenList1.add(parentList[0] + "-new-" + "first");
         childrenList1.add(parentList[0] + "-new-" + "second");
@@ -115,6 +126,20 @@ public class ExpandableListViewTestActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * 更新父项数据
+     */
+    private void updateParentData() {
+        dataset.clear();
+        parentList[0] = "new-first";
+        parentList[1] = "new-second";
+        parentList[2] = "new-third";
+        dataset.put(parentList[0], childrenList1);
+        dataset.put(parentList[1], childrenList2);
+        dataset.put(parentList[2], childrenList3);
+        adapter.notifyDataSetChanged();
+    }
+
     private class MyExpandableListViewAdapter extends BaseExpandableListAdapter {
 
         //  获得某个父项的某个子项
@@ -126,12 +151,20 @@ public class ExpandableListViewTestActivity extends AppCompatActivity {
         //  获得父项的数量
         @Override
         public int getGroupCount() {
+            if (dataset == null) {
+                Toast.makeText(ExpandableListViewTestActivity.this, "dataset为空", Toast.LENGTH_SHORT).show();
+                return 0;
+            }
             return dataset.size();
         }
 
         //  获得某个父项的子项数目
         @Override
         public int getChildrenCount(int parentPos) {
+            if (dataset.get(parentList[parentPos]) == null) {
+                Toast.makeText(ExpandableListViewTestActivity.this, "\" + parentList[parentPos] + \" + 数据为空", Toast.LENGTH_SHORT).show();
+                return 0;
+            }
             return dataset.get(parentList[parentPos]).size();
         }
 
