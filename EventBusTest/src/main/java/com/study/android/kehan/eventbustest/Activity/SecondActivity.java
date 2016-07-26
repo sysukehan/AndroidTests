@@ -26,7 +26,8 @@ public class SecondActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new EventBusMessage("我又滚回来了"));
+                EventBus.getDefault().post(new EventBusMessage("我是一个消息"));
+//                EventBus.getDefault().post(new String("我是一个消息"));
                 finish();
             }
         });
