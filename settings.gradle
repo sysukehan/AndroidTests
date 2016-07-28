@@ -1,1 +1,1 @@
-include ':ExpandableListViewTest', ':EventBusTest', ':ResourceFileTest'
+include ':ExpandableListViewTest', ':EventBusTest', ':ResourceFileTest', ':CalendarTest'
